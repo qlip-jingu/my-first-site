@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TRUNK co.,ltd. Recruit Site | CO-CREATE Mock</title>
+  <meta name="description" content="TRUNK co.,ltd. Recruit Site Pattern 01 CO-CREATE design mock" />
+  <link rel="preconnect" href="https://www.trunk-base.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --black:#0a0a0a;
+      --ink:#171717;
+      --gray:#666;
+      --light:#f4f4f1;
+      --paper:#fbfbf8;
+      --line:#deded8;
+      --header-h:76px;
+      --ease:cubic-bezier(.19,1,.22,1);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;overflow-x:hidden}
+    body{
+      margin:0;
+      overflow-x:hidden;
+      font-family:"Zen Kaku Gothic New",system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+      color:var(--ink);
+      background:var(--paper);
+      letter-spacing:.02em;
+      line-height:1.85;
+    }
+    a{color:inherit;text-decoration:none}
+    .site-header{
+      max-width:100vw;
+      position:fixed; top:0; left:0; right:0; z-index:50;
+      height:var(--header-h); background:rgba(255,255,253,.96);
+      border-bottom:1px solid rgba(0,0,0,.05);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(22px,4vw,64px); backdrop-filter:blur(10px);
+    }
+    .logo{display:flex;align-items:center;height:54px;max-width:330px;overflow:hidden}
+    .logo img{display:block;width:auto;height:46px;max-height:46px;max-width:320px;object-fit:contain;filter:grayscale(1) contrast(1.2)}
+    .fallback-logo{font-weight:800;letter-spacing:-.04em;font-size:18px}.fallback-logo span{font-weight:400;letter-spacing:-.02em}
+    .nav{display:flex;align-items:center;gap:clamp(14px,1.7vw,26px);font-size:16px;font-weight:600;letter-spacing:.03em;white-space:nowrap}
+    .entry{background:#111;color:white;padding:13px 18px;line-height:1}
+
+    .hero-shell{position:relative;min-height:205vh;background:#050505;color:white;overflow:clip}
+    .hero-bg{
+      position:fixed; top:var(--header-h); left:0; right:0; height:calc(100vh - var(--header-h));
+      z-index:0; opacity:1; transition:none; filter:brightness(.80) saturate(.95);
+      pointer-events:none; overflow:hidden; background:#111;
+    }
+    .hero-bg.is-hidden{opacity:0;filter:grayscale(1) contrast(.85) brightness(.35) blur(8px)}
+    .photo-grid{position:absolute;inset:-4%;display:flex;flex-direction:column;gap:0;padding:0;transform:translate3d(var(--mx,0),calc(var(--my,0) + var(--groupParallaxY,0px)),0) scale(1.06);transition:transform .45s var(--ease);will-change:transform}
+    .row{position:relative;flex:1;min-height:0;overflow:hidden;will-change:transform}
+    .row-track{height:100%;width:max-content;display:grid;grid-auto-flow:column;grid-auto-columns:clamp(220px,25vw,470px);gap:0;animation:heroLoopLeft var(--speed,72s) linear infinite;will-change:transform}
+    .row:nth-child(2) .row-track,.row:nth-child(4) .row-track{animation-name:heroLoopRight}
+    .row:nth-child(1) .row-track{--speed:74s}.row:nth-child(2) .row-track{--speed:82s}.row:nth-child(3) .row-track{--speed:78s}.row:nth-child(4) .row-track{--speed:86s}
+    .row:nth-child(1),.row:nth-child(3){transform:translateX(0)}.row:nth-child(2){transform:translateX(-3vw)}.row:nth-child(4){transform:translateX(-1vw)}
+    @keyframes heroLoopLeft{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+    @keyframes heroLoopRight{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+    .ph{position:relative;overflow:hidden;background:#222;min-width:0;isolation:isolate}
+    .ph:before{content:"";position:absolute;inset:-3%;background-image:var(--img),linear-gradient(135deg,#2d2d2d,#151515 58%,#353535);background-size:cover;background-position:var(--pos,center);opacity:1;transform:scale(1.01)}
+    .ph:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.06),rgba(0,0,0,.12));mix-blend-mode:normal}.hero-bg .ph:hover,.hero-bg .ph:hover:before{transform:none}.hero-bg .ph:hover:before{transform:scale(1.01)}
+    .ph .face,.ph .body{display:none}
+    .hero-content,.message-content{position:relative;z-index:1;min-height:100vh;display:grid;align-items:center;padding:calc(var(--header-h) + 32px) clamp(22px,7vw,104px) 8vh}
+    .hero-copy{max-width:780px;margin-top:4vh}.hero .hero-copy{max-width:none;margin:0 auto;text-align:center;justify-self:center}.label{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.hero h1{font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:clamp(27px,4.5vw,66px);line-height:1;font-weight:500;letter-spacing:.012em;margin:0 0 32px;white-space:nowrap;text-shadow:0 2px 14px rgba(0,0,0,.38)}.hero p{font-size:clamp(17px,2vw,25px);line-height:1.8;margin:0 0 34px;max-width:560px}.btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.btn{display:inline-flex;align-items:center;justify-content:center;gap:.7em;min-width:154px;padding:14px 28px;border:1px solid rgba(255,255,255,.78);font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}.btn::after{content:"";display:inline-block;width:.78em;height:.78em;background:currentColor;clip-path:polygon(0 42%,63% 42%,35% 14%,47% 2%,96% 50%,47% 98%,35% 86%,63% 58%,0 58%);transform:rotate(-45deg);flex:0 0 auto}.btn.primary{background:#000;color:#fff;border-color:#000}.btn.dark{background:#111;color:#fff;border-color:#111}
+    .message-content{align-items:end;padding-bottom:16vh}.split{display:grid;grid-template-columns:minmax(160px,.8fr) minmax(280px,1.35fr);gap:clamp(36px,9vw,130px);width:100%;align-items:start}.split h2,.section-title{font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.15;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin:0}.message-body{font-size:clamp(22px,2.8vw,40px);line-height:1.55;letter-spacing:-.04em;font-weight:500;max-width:900px}.message-body p{margin:0}.message-translation{display:block;margin-top:0;padding-top:30px;font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:11px;line-height:1.9;font-weight:400;letter-spacing:.04em;max-width:620px;color:rgba(255,255,255,.78)}.fade-sentinel{position:absolute;bottom:0;height:2px;width:100%}
+
+    main{position:relative;z-index:2;background:var(--paper)}
+    section{padding:clamp(88px,12vw,160px) clamp(22px,7vw,104px)}
+    .marquee-section{padding-top:80px;padding-bottom:84px;background:var(--paper);overflow:hidden}.marquee{display:flex;width:max-content;gap:12px;animation:marquee 44s linear infinite;transform:perspective(900px) rotateX(.8deg)}.marquee.reverse{margin-top:12px;animation-direction:reverse;animation-duration:54s}.marquee .tile{width:clamp(180px,21vw,330px);height:clamp(116px,13vw,205px);background:#d9d9d3;position:relative;overflow:hidden;filter:grayscale(1) contrast(.95) brightness(.92)}.marquee .tile:before{content:"";position:absolute;inset:-5%;background-image:var(--img),linear-gradient(135deg,#cfcfca,#ededeb 45%,#bdbdb8);background-size:cover;background-position:var(--pos,center);opacity:.95;transform:translateZ(0) scale(1.04)}.marquee .tile:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.18),transparent 55%)}@keyframes marquee{to{transform:translateX(-50%) perspective(900px) rotateX(.8deg)}}
+
+    .strategy{background:#f7f7f3}.content-text{max-width:620px}.content-text p{margin:0;color:#383838}.wide-photo{min-height:560px;background:#d8d8d2;position:relative;overflow:hidden;filter:grayscale(1) contrast(.96) brightness(.96);box-shadow:0 0 0 1px rgba(0,0,0,.04) inset}.wide-photo:before{content:"";position:absolute;inset:-4%;background-image:var(--img),linear-gradient(130deg,#bdbdb7,#eeeeea 44%,#999 45%,#dadad5 70%,#b7b7b0);background-size:cover;background-position:center;transform:scale(1.02)}.wide-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.2),transparent 54%),radial-gradient(ellipse at 65% 12%,rgba(255,255,255,.18),transparent 35%)}
+    .teams{background:var(--paper)}.teams-wrap{width:100%;max-width:1680px;margin:0 auto}.teams .section-title{display:block;width:100%;text-align:center;margin:0 0 54px;font-size:14px;font-weight:500;letter-spacing:.14em}.team-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;width:100%}.team-item{position:relative;min-width:0;min-height:clamp(320px,31vw,480px);overflow:hidden;background:#1f1f1f}.team-photo{position:absolute;inset:0;background:#d9d9d4;overflow:hidden}.team-photo:before{content:"";position:absolute;inset:0;background-image:var(--img),linear-gradient(145deg,#ecece7,#b0b0ab);background-size:cover;background-position:var(--pos,center);transform:scale(1.015)}.team-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.18),rgba(0,0,0,.05) 22%,rgba(0,0,0,.14) 48%,rgba(0,0,0,.62) 82%,rgba(0,0,0,.76) 100%)}.team-body{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(320px,31vw,480px);padding:30px 28px 28px;color:#fff}.team-name{font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:28px;line-height:1.14;font-weight:700;letter-spacing:.035em;color:#fff;text-transform:none}.team-role{margin-top:12px;font-family:"Zen Kaku Gothic New",system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;font-size:18px;line-height:1.72;font-weight:500;color:rgba(255,255,255,.98);letter-spacing:.01em;max-width:92%}.team-desc{margin-top:12px;font-size:13px;line-height:1.75;color:rgba(255,255,255,.78);max-width:90%}.team-link{margin-top:24px;display:inline-flex;align-items:center;justify-content:center;gap:.7em;align-self:flex-start;padding:13px 22px;border:1px solid rgba(255,255,255,.78);color:#fff;font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(0,0,0,.08);backdrop-filter:blur(2px)}.team-link .arrow{font-size:15px;line-height:1;transform:translateY(-1px)}@media (max-width: 1180px){.team-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.team-item,.team-body{min-height:420px}}@media (max-width: 720px){.teams .section-title{margin-bottom:34px}.teams-wrap{width:min(100%,calc(100vw - 32px))}.team-list{grid-template-columns:1fr;gap:20px}.team-item,.team-body{min-height:380px;padding:22px}.team-name{font-size:24px}.team-role{font-size:16px}}.talk{background:#fff}.talk-wrap{max-width:1240px;margin:0 auto}.talk .section-title{display:block;width:100%;text-align:center;margin:0 0 54px;font-size:14px;font-weight:500;letter-spacing:.14em}.talk-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:60px 52px}.talk-card{display:grid;grid-template-columns:280px minmax(0,1fr);gap:32px;align-items:start;padding:0 0 32px;border-bottom:1px solid #d5d5d1}.talk-image{height:180px;background:#ddd;filter:none;position:relative;overflow:hidden}.talk-image:before{content:"";position:absolute;inset:0;background-image:var(--img),linear-gradient(135deg,#bbb,#f1f1ed);background-size:cover;background-position:var(--pos,center);transform:scale(1.01);transition:none}.talk-image:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.05),transparent 58%)}.talk-card:hover .talk-image{filter:none}.talk-card:hover .talk-image:before{transform:scale(1.01)}.talk-body{display:flex;flex-direction:column;min-height:180px;padding-top:2px}.talk-title{font-family:"Zen Kaku Gothic New",system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;font-weight:500;line-height:1.75;font-size:18px;letter-spacing:.02em;color:#111}.talk-excerpt{font-size:12px;line-height:1.8;color:#555;margin-top:20px;letter-spacing:.02em}.talk-meta{margin-top:auto;padding-top:28px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#111;display:flex;gap:24px;flex-wrap:wrap;font-weight:700;line-height:1.2}@media (max-width: 1100px){.talk-list{grid-template-columns:1fr;gap:42px}.talk-card{grid-template-columns:minmax(220px,280px) 1fr}}@media (max-width: 720px){.talk .section-title{margin-bottom:34px}.talk-card{grid-template-columns:1fr;gap:18px}.talk-image{height:220px}.talk-body{min-height:0}.talk-meta{padding-top:22px}}.open{background:#f4f4f0;text-align:center}.open h2{font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:clamp(34px,5vw,74px);line-height:1;letter-spacing:.012em;margin:20px 0 24px}.open p{margin:0 auto 34px;max-width:560px;color:#555}
+    .footer{background:#000;background-image:none;color:#fff;padding:clamp(72px,8vw,104px) clamp(22px,8vw,154px) 42px}.footer-inner{max-width:1580px;margin:0 auto;position:relative;min-height:300px}.footer-content{display:grid;grid-template-columns:minmax(360px,1.5fr) minmax(220px,.55fr) minmax(220px,.55fr);gap:clamp(44px,8vw,128px);align-items:start}.footer-logo{margin-bottom:30px}.footer-logo img{display:block;width:clamp(160px,14vw,230px);height:auto}.footer-logo span{font-weight:400;letter-spacing:-.04em}.footer-address{color:rgba(255,255,255,.86);font-size:15px;line-height:1.7;margin-bottom:12px}.footer-social{display:flex;gap:48px;flex-wrap:wrap;margin-top:8px}.footer h3{font-family:Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.35;letter-spacing:.01em;margin:0 0 22px;font-weight:400;text-transform:none}.footer a{display:block;color:rgba(255,255,255,.84);font-size:15px;line-height:1.65;letter-spacing:.01em;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}.footer a:hover{color:#fff}.footer-bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;color:rgba(255,255,255,.86);font-size:15px;letter-spacing:.01em;margin-top:clamp(78px,9vw,112px)}.footer-bottom .copyright{grid-column:2;text-align:center}.footer-policies{grid-column:3;justify-self:end;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.82)}.footer-policies a{display:inline;color:rgba(255,255,255,.82);font-size:15px;line-height:1.2}.footer-policies span{color:rgba(255,255,255,.72)}.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.reveal.in{opacity:1;transform:translateY(0)}
+    @media (max-width:860px){:root{--header-h:66px}.nav a:not(.entry){display:none}.logo{height:28px;max-width:154px}.logo img{height:20px;max-height:20px;max-width:148px}.split{grid-template-columns:1fr;gap:26px}.message-body{font-size:28px}.hero h1{font-size:56px}.photo-grid{gap:0;padding:0}.row{gap:0}.team-list,.talk-list{grid-template-columns:1fr}.team-item,.team-item:nth-child(even){grid-template-columns:1fr}.wide-photo{min-height:360px}.talk-card{grid-template-columns:112px 1fr}.footer{padding:62px 22px 34px}.footer-inner{min-height:auto}.footer-content{grid-template-columns:1fr;gap:42px}.footer-logo{margin-bottom:24px}.footer-social{gap:32px}.footer h3{font-size:14px;margin-bottom:14px}.footer a,.footer-address{font-size:13px}.footer-bottom{display:block;font-size:12px;margin-top:64px}.footer-bottom .copyright{text-align:left}.footer-policies{display:flex;justify-content:flex-start;gap:8px;margin-top:18px}.footer-policies a{font-size:12px}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#top" aria-label="TRUNK-BASE"><img src="https://www.trunk-base.com/assets/img/common/logo-full.svg" alt="TRUNK-BASE" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback-logo" style="display:none">TRUNK <span>co.,ltd.</span></span></a>
+    <nav class="nav" aria-label="Primary"><a href="#">ホーム</a><a href="#message">ブランド紹介</a><a href="#teams">部署・チーム</a><a href="#strategy">経営戦略</a><a href="#talk">TRUNKERS TALK</a><a href="#positions">中途採用</a><a href="#positions">新卒採用</a></nav>
+  </header>
+
+  <div id="top" class="hero-shell">
+    <div class="hero-bg" id="heroBg" aria-hidden="true">
+      <div class="photo-grid" id="photoGrid">
+        <div class="row"><div class="row-track"><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div></div></div>
+        <div class="row"><div class="row-track"><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div></div></div>
+        <div class="row"><div class="row-track"><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div></div></div>
+        <div class="row"><div class="row-track"><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div><div class="ph"><span class="face"></span><span class="body"></span></div></div></div>
+      </div>
+    </div>
+
+    <section class="hero hero-content" aria-label="Hero">
+      <div class="hero-copy reveal in">
+        <h1>CO-CREATE THE FUTURE.</h1>
+        <div class="btns"><a class="btn primary" href="#positions">VIEW POSITIONS</a><a class="btn" href="#message">ABOUT TRUNK</a></div>
+      </div>
+    </section>
+
+    <section id="message" class="message-content" aria-label="Our Message">
+      <div class="split reveal">
+        <h2>Our Message</h2>
+        <div class="message-body"><p>ひとりの力だけでは、まだ見ぬ価値は生まれない。空間、体験、思想、そして人。異なる専門性が重なり合うことで、TRUNKらしい未来は少しずつかたちになっていく。</p><p class="message-translation">New value cannot be created by one person alone. Spaces, experiences, ideas, and people. As different areas of expertise come together, the future that is uniquely TRUNK slowly begins to take shape.</p></div>
+      </div>
+    </section>
+    <div class="fade-sentinel" id="fadeSentinel"></div>
+  </div>
+
+  <main>
+    <section id="strategy" class="strategy">
+      <div class="split reveal"><h2 class="section-title">Our Strategy</h2><div><div class="content-text"><p>TRUNK co.,ltd. は、ホテルを中心に、街・人・文化をつなぐ事業をつくる会社です。目に見えるサービスだけではなく、体験の背景にある思想や関係性まで設計し、次のスタンダードを共につくっていきます。</p></div><div class="wide-photo" style="margin-top:54px" aria-label="Strategy image placeholder"></div></div></div>
+    </section>
+
+    <section id="teams" class="teams">
+      <div class="teams-wrap reveal">
+        <h2 class="section-title">Our Teams</h2>
+        <div class="team-list">
+          <article class="team-item">
+            <div class="team-photo"></div>
+            <div class="team-body">
+              <div class="team-name">Hotel Operations</div>
+              <div class="team-role">滞在体験の最前線で、心地よい時間をかたちにする。</div>
+              <div class="team-desc">ゲストともっとも近い距離で向き合い、TRUNKらしいサービスを日々磨き続けるチーム。</div>
+              <div class="team-link"><span>VIEW TEAM</span><span class="arrow">→</span></div>
+            </div>
+          </article>
+          <article class="team-item">
+            <div class="team-photo"></div>
+            <div class="team-body">
+              <div class="team-name">Planning &amp; Development</div>
+              <div class="team-role">まだ見ぬ価値を企画し、事業として立ち上げていく。</div>
+              <div class="team-desc">新たなホテル体験やブランドの広がりを構想し、具体的な事業やプロジェクトへと育てていくチーム。</div>
+              <div class="team-link"><span>VIEW TEAM</span><span class="arrow">→</span></div>
+            </div>
+          </article>
+          <article class="team-item">
+            <div class="team-photo"></div>
+            <div class="team-body">
+              <div class="team-name">Brand &amp; Communication</div>
+              <div class="team-role">言葉とビジュアルで、TRUNKらしさを社会へ届ける。</div>
+              <div class="team-desc">ブランドの思想を編集し、体験・発信・クリエイティブを通して一貫した世界観へと翻訳するチーム。</div>
+              <div class="team-link"><span>VIEW TEAM</span><span class="arrow">→</span></div>
+            </div>
+          </article>
+          <article class="team-item">
+            <div class="team-photo"></div>
+            <div class="team-body">
+              <div class="team-name">Food &amp; Beverage</div>
+              <div class="team-role">食を通して、TRUNKならではの体験価値をつくる。</div>
+              <div class="team-desc">レストランやバー、イベントの食体験を通して、記憶に残る時間を演出するチーム。</div>
+              <div class="team-link"><span>VIEW TEAM</span><span class="arrow">→</span></div>
+            </div>
+          </article>
+          <article class="team-item">
+            <div class="team-photo"></div>
+            <div class="team-body">
+              <div class="team-name">Experience Design</div>
+              <div class="team-role">空間とサービスを横断し、体験の質を磨き上げる。</div>
+              <div class="team-desc">ブランド体験全体を設計し、細部まで一貫した心地よさをつくるチーム。</div>
+              <div class="team-link"><span>VIEW TEAM</span><span class="arrow">→</span></div>
+            </div>
+          </article>
+          <article class="team-item">
+            <div class="team-photo"></div>
+            <div class="team-body">
+              <div class="team-name">Corporate</div>
+              <div class="team-role">人と仕組みの両面から、組織と事業の成長を支える。</div>
+              <div class="team-desc">経営基盤を整えながら、採用・制度・経理・総務など多面的に組織の成長を支えるチーム。</div>
+              <div class="team-link"><span>VIEW TEAM</span><span class="arrow">→</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="talk" class="talk">
+      <div class="talk-wrap reveal">
+        <h2 class="section-title">INTERVIEW</h2>
+        <div class="talk-list">
+          <article class="talk-card"><div class="talk-image"></div><div class="talk-body"><div class="talk-title">私がTRUNKで働く理由：阿部桃子の場合</div><div class="talk-excerpt">私がTRUNKで働く理由</div><div class="talk-meta"><span>2026.02.22</span><span>TRUNK(HOTEL) YOYOGI PARK</span></div></div></article>
+          <article class="talk-card"><div class="talk-image"></div><div class="talk-body"><div class="talk-title">【鼎談】遠くまで、共に歩むために。「未来への第一歩」としてのドネーションのあり方。</div><div class="talk-excerpt">セッション</div><div class="talk-meta"><span>2025.12.17</span><span>CORPORATE</span></div></div></article>
+          <article class="talk-card"><div class="talk-image"></div><div class="talk-body"><div class="talk-title">私がTRUNKで働く理由：清水有香の場合</div><div class="talk-excerpt">私がTRUNKで働く理由</div><div class="talk-meta"><span>2025.11.18</span><span>CORPORATE</span></div></div></article>
+          <article class="talk-card"><div class="talk-image"></div><div class="talk-body"><div class="talk-title">「誰かのため」が、「自分のため」に。〜 森山伸也：生き方とソーシャライジングが重なる幸福 〜</div><div class="talk-excerpt">WANTが新しい価値を生み出す</div><div class="talk-meta"><span>2025.10.10</span><span>TRUNK(HOTEL) YOYOGI PARK</span></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="positions" class="open">
+      <div class="reveal"><div class="label">Open Position</div><h2>JOIN OUR TEAM.</h2><p>TRUNK co.,ltd. の未来を、ともにつくる仲間を募集しています。</p><a class="btn dark" href="#">VIEW POSITIONS</a></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-content">
+        <div class="footer-company">
+          <div class="footer-logo"><img src="https://www.trunk-base.com/assets/img/common/logo-text-white.svg" alt="TRUNK co.,ltd."></div>
+          <div class="footer-address">5-31 Jingumae Shibuya-ku Tokyo 150-0001 JAPAN</div>
+          <div class="footer-social"><a href="#">INSTAGRAM</a><a href="#">CONTACT</a></div>
+        </div>
+        <div class="footer-hotels">
+          <h3>OUR HOTELS</h3>
+          <a href="#">TRUNK (HOTEL) CAT STREET</a>
+          <a href="#">TRUNK (HOTEL) YOYOGI PARK</a>
+          <a href="#">TRUNK (HOUSE)</a>
+        </div>
+        <div class="footer-company-link">
+          <h3>OPERATING COMPANY</h3>
+          <a href="#">TRUNK co., ltd.</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copyright">© TRUNK co.,ltd. All Rights Reserved.</div>
+        <div class="footer-policies"><a href="#">Privacy Policy</a><span>/</span><a href="#">Site Policy</a><span>/</span><a href="#">Cookie Policy</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const grid = document.getElementById('photoGrid');
+    const bg = document.getElementById('heroBg');
+    const sentinel = document.getElementById('fadeSentinel');
+
+    const unsplash = (id, w = 1200, h = 800) => `url('https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&h=${h}&q=78')`;
+    const heroRows = [
+      [
+        'assets/hero_uploads/person_01.png','assets/hero_uploads/person_02.png','assets/hero_uploads/person_03.png','assets/hero_uploads/person_04.png','assets/hero_uploads/person_05.png'
+      ],
+      [
+        'assets/hero_uploads/person_06.png','assets/hero_uploads/person_07.png','assets/hero_uploads/person_08.png','assets/hero_uploads/person_09.png','assets/hero_uploads/person_10.png'
+      ],
+      [
+        'assets/hero_uploads/person_11.png','assets/hero_uploads/person_12.png','assets/hero_uploads/person_13.png','assets/hero_uploads/person_14.png','assets/hero_uploads/person_15.png'
+      ],
+      [
+        'assets/hero_uploads/person_16.png','assets/hero_uploads/person_17.png','assets/hero_uploads/person_18.png','assets/hero_uploads/person_19.png','assets/hero_uploads/person_20.png'
+      ]
+    ];
+    const teamImages = [
+      ['photo-1551882547-ff40c63fe5fa','center'],
+      ['photo-1524758631624-e2822e304c36','center'],
+      ['photo-1517048676732-d65bc937f952','center'],
+      ['photo-1517248135467-4c7edcad34c4','center'],
+      ['photo-1497366754035-f200968a6e72','center'],
+      ['photo-1552664730-d307ca884978','center']
+    ];
+    const talkImages = [
+      ['assets/interview/interview_01.jpg','center'],
+      ['assets/interview/interview_02.jpg','center'],
+      ['assets/interview/interview_03.jpg','center'],
+      ['assets/interview/interview_04.jpg','center']
+    ];
+
+    document.querySelectorAll('.row').forEach((row, rowIndex) => {
+      const track = row.querySelector('.row-track');
+      const rowImages = heroRows[rowIndex % heroRows.length];
+      const tiles = rowImages.concat(rowImages).map(src => `<div class="ph" style="--img:url('${src}')"><span class="face"></span><span class="body"></span></div>`).join('');
+      track.innerHTML = tiles;
+    });
+    document.querySelectorAll('.team-photo').forEach((el, i) => {
+      const [src, pos] = teamImages[i % teamImages.length];
+      const img = src.startsWith('assets/') ? `url('${src}')` : unsplash(src, 900, 1200);
+      el.style.setProperty('--img', img);
+      el.style.setProperty('--pos', pos);
+    });
+    document.querySelectorAll('.talk-image').forEach((el, i) => {
+      const [src, pos] = talkImages[i % talkImages.length];
+      const img = src.startsWith('assets/') ? `url('${src}')` : unsplash(src, 620, 420);
+      el.style.setProperty('--img', img);
+      el.style.setProperty('--pos', pos);
+    });
+    document.querySelector('.wide-photo')?.style.setProperty('--img', `url('assets/strategy/strategy_01.jpg')`);
+
+    // Hero背景はカーソル操作では拡大・移動させない。
+    grid.style.setProperty('--mx', '0px');
+    grid.style.setProperty('--my', '0px');
+
+    const heroShell = document.querySelector('.hero-shell');
+    let ticking = false;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    function updateHeroBackground() {
+      const shellRect = heroShell.getBoundingClientRect();
+      const shellTop = window.scrollY + shellRect.top;
+      const shellHeight = heroShell.offsetHeight;
+      const viewport = window.innerHeight;
+
+      // Our Message の後半から、次セクションに入るまでの約70vhでゆっくりフェードアウト。
+      const fadeStart = shellTop + shellHeight - viewport * 1.12;
+      const fadeEnd = shellTop + shellHeight - viewport * 0.42;
+      const progress = clamp((window.scrollY - fadeStart) / Math.max(1, fadeEnd - fadeStart), 0, 1);
+      const eased = progress * progress * (3 - 2 * progress);
+      const opacity = 1 - eased;
+      const saturation = 0.96 - eased * 0.1;
+      const blur = eased * 7;
+      const y = eased * -18;
+
+      const heroProgress = clamp((window.scrollY - shellTop) / Math.max(1, shellHeight - viewport), 0, 1);
+      const centeredProgress = heroProgress - 0.5;
+
+      // 画像1枚ごとではなく、4行の画像群全体をまとめてパララックスさせる。
+      // 自動ループはそのまま維持し、背景の集合体だけが少し遅れて動く見え方にする。
+      const groupY = centeredProgress * -76;
+      grid.style.setProperty('--groupParallaxY', `${groupY.toFixed(2)}px`);
+
+      bg.style.opacity = opacity.toFixed(3);
+      bg.style.filter = `brightness(${(0.80 - eased * 0.12).toFixed(3)}) saturate(${saturation.toFixed(3)}) blur(${blur.toFixed(2)}px)`;
+      grid.style.transform = `translate3d(var(--mx,0), calc(var(--my,0) + ${y.toFixed(2)}px + var(--groupParallaxY,0px)), 0) scale(1.06)`;
+      bg.style.visibility = opacity <= 0.01 ? 'hidden' : 'visible';
+      ticking = false;
+    }
+
+    function requestHeroUpdate() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeroBackground);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', requestHeroUpdate, {passive:true});
+    window.addEventListener('resize', requestHeroUpdate, {passive:true});
+    requestHeroUpdate();
+
+    const reveal = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in'); });
+    }, {threshold:.18});
+    document.querySelectorAll('.reveal').forEach(el => reveal.observe(el));
+  </script>
+</body>
+</html>
